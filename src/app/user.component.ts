@@ -1,78 +1,72 @@
 import { Component } from '@angular/core';
 
 @Component({
+  moduleId: module.id,
   selector: 'user',
-  template: `<nav class="navbar navbar-default">
-
-		  <div class="navbar-header">
-
-		    <a class="navbar-brand" href="#">Hi Admin!</a>
-
-		  </div>
-
-		  <ul class="nav navbar-nav navbar-right">
-
-		    <li class="active">
-		    <li><a href="#">Log Out</a></li>
-
-		  </ul>
-
-		</nav> 		
-
-		<div class="container">
-
-		  <div class="row">
-
-			  <div class="row">
-		        <div class="col-md-6">
-		          <h3>User Name</h3>
-		        </div>
-		        <div class="col-md-2">
-		          <h3>Preparer</h3>
-		        </div>
-		        <div class="col-md-2">
-		          <h3>Reviewer</h3>
-		        </div>
-		        <div class="col-md-2">
-		          <h3>Delete User</h3>		          
-		        </div>
-		      </div>
-
-		      <hr/>
-
-			  <div class="row">
-		        <div class="col-md-6">
-		          <h3>User Name</h3>
-		        </div>
-		        <div class="col-md-2">
-		          <a class="btn btn-primary" href="#">Enable</a>
-		        </div>
-		        <div class="col-md-2">
-		          <a class="btn btn-primary" href="#">Enable</a>
-		        </div>
-		        <div class="col-md-2">
-		          <a class="btn btn-primary" href="#">Delete User</a>
-		        </div>
-		      </div>
-
-		      <hr/>
-		</div>`,
+  templateUrl: 'user.component.html',
 })
  export class UserComponent  { 
-// 	usersList: [];
+	admin: string;
+	usersList: usersList[];
+	newUserName: string;
+	newUserPrep: boolean;
+	newUserRev: boolean;
 
-// 	constructor(){
-// 		this.usersList = [{
-// 			userName : "Brad Pitt",
-// 			preparer : false,
-// 			reviewer : false
-// 		}];
-// 	}
-//  }
+	constructor(){
+		// if(localStorage.getItem('localUserList')){
+		// 	this.usersList: usersList[] = localStorage.getItem('localUserList');
+		// }
+		this.admin = "nameOfAdmin";
+		this.newUserRev=false;
+		this.newUserPrep=false;
+		this.usersList = [{
+			//index: 0,
+			userName : "Brad Pitt",
+			preparer : true,
+			reviewer : false
+		},
+		{
+			//index: 0,
+			userName : "Mitt Romney",
+			preparer : false,
+			reviewer : true
+		}
+		];
+	}
 
- // interface usersList { 	
- // 	userName: string;
- // 	preparer: boolean;
- // 	reviewer: boolean; 	
- // }
-}
+	togglePrepStatus(arrIndex:number){
+		this.usersList[arrIndex].preparer = !this.usersList[arrIndex].preparer; 
+		localStorage.setItem('localUserList',this.usersList);
+	}
+
+	toggleRevStatus(arrIndex:number){
+		this.usersList[arrIndex].reviewer = !this.usersList[arrIndex].reviewer;
+	}
+
+	deleteUser(arrIndex:number){
+		this.usersList.splice(arrIndex,1);
+	}
+
+	togglePrep(){
+		this.newUserPrep = !this.newUserPrep;
+	}
+
+	toggleRev(){
+		this.newUserRev = !this.newUserRev;
+	}
+
+	submitUser(){
+		this.usersList.push({
+			userName: this.newUserName,
+			preparer: this.newUserPrep,
+			reviewer: this.newUserRev
+		});
+	}
+ }
+
+ export interface usersList { 	
+ 	//index: number;
+ 	userName: string;
+ 	preparer: boolean;
+ 	reviewer: boolean; 	
+ }
